@@ -241,6 +241,11 @@ export interface Editor {
   canUndo: () => boolean;
   canRedo: () => boolean;
   onPaste: () => void;
+  savePng: () => void;
+  saveJpg: () => void;
+  saveSvg: () => void;
+  saveJson: () => void;
+  loadJson: (json: string) => void;
   autoZoom: () => void;
   bringForward: () => void;
   sendBackwards: () => void;

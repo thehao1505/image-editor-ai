@@ -1,4 +1,5 @@
 import { replicate } from "@/lib/replicate";
+import { verifyAuth } from "@hono/auth-js";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
@@ -6,6 +7,7 @@ import { z } from "zod";
 const app = new Hono()
   .post(
     "/remove-bg",
+    verifyAuth(),
     zValidator("json", z.object({ image: z.string() })),
     async (c) => {
       const { image } = c.req.valid("json");

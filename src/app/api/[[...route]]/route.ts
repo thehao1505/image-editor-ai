@@ -22,7 +22,6 @@ app.use("*", initAuthConfig(getAuthConfig));
 const routes = app
   .route('/images', images)
   .route('/ai', ai)
-  .route('/test', test)
   .route('/users', users);
 
 export const GET = handle(app);

@@ -28,6 +28,7 @@ const app = new Hono()
   )
   .post(
     "/generate-image",
+    verifyAuth(),
     zValidator(
       "json",
       z.object({

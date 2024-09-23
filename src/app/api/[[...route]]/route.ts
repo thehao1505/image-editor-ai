@@ -3,7 +3,6 @@ import { handle } from 'hono/vercel';
 import { AuthConfig, initAuthConfig } from '@hono/auth-js';
 import images from './images';
 import ai from './ai';
-import test from './test';
 import users from './users';
 import authConfig from '@/auth.config';
 

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ActiveTool, Editor } from "@/features/editor/types";
 import { cn } from "@/lib/utils";
+import { UserButton } from "@/features/auth/components/user-button";
 
 interface NavbarProps {
   editor: Editor | undefined;
@@ -82,7 +83,6 @@ export const Navbar = ({
             variant="ghost"
             size="icon"
             onClick={() => editor?.onUndo()}
-            className="" // TODO: add dynamic classes
           >
             <Undo2 className="size-4" />
           </Button>
@@ -163,7 +163,7 @@ export const Navbar = ({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* TODO: Add user-button components*/}
+          <UserButton />
         </div>
       </div>
     </nav>

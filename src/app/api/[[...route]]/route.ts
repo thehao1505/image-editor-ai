@@ -5,6 +5,7 @@ import images from './images';
 import ai from './ai';
 import users from './users';
 import authConfig from '@/auth.config';
+import projects from './projects';
 
 export const runtime = 'nodejs';
 
@@ -20,8 +21,9 @@ const app = new Hono().basePath('/api');
 app.use("*", initAuthConfig(getAuthConfig));
 
 const routes = app
-  .route('/images', images)
   .route('/ai', ai)
+  .route('/projects', projects)
+  .route('/images', images)
   .route('/users', users);
 
 export const GET = handle(app);

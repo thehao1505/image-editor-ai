@@ -22,12 +22,24 @@ import { RemoveBgSidebar } from "@/features/editor/components/remove-bg-sidebar"
 import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
 import { SettingsSidebar } from "./settings-sidebar";
 import { ResponseType } from "@/features/projects/use-get-project";
+import { useUpdateProject } from "@/features/projects/use-update-project";
+import debounce from "lodash.debounce";
 
 interface EditorProps {
   initialData: ResponseType["data"];
 }
 
 export const Editor = ({ initialData }: EditorProps) => {
+  const { mutate } = useUpdateProject(initialData.id);
+
+  const debouncedSave = useCallback(debounce((values: {
+    json: string, 
+    height: number,
+    width: number,
+  }) => {
+    mutate(values);
+  }, 500), [mutate]);
+
   const [activeTool, setActiveTool] = useState<ActiveTool>("select");
 
   const onClearSelection = useCallback(() => {
@@ -37,7 +49,11 @@ export const Editor = ({ initialData }: EditorProps) => {
   }, [activeTool]);
   
   const { init, editor } = useEditor({
+    defaultState: initialData.json,
+    defaultWidth: initialData.width,
+    defaultHeight: initialData.height,
     clearSelectionCallback: onClearSelection,
+    saveCallback: debouncedSave,
   });
   
   const onChangeActiveTool = useCallback((tool: ActiveTool) =>{
@@ -77,7 +93,7 @@ export const Editor = ({ initialData }: EditorProps) => {
 
   return (
     <div className="h-full flex flex-col">
-      <Navbar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
+      <Navbar id={initialData.id} editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
       <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
         <Sidebar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
         <ShapeSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>

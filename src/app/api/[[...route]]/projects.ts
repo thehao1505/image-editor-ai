@@ -3,10 +3,37 @@ import { Hono } from "hono";
 import { db } from "@/db/drizzle";
 import { verifyAuth } from "@hono/auth-js";
 import { zValidator } from "@hono/zod-validator";
-import { projects, projectsInsertSchema, users } from "@/db/schema";
+import { projects, projectsInsertSchema } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
 const app = new Hono()
+  .patch(
+    "/:id",
+    verifyAuth(),
+    zValidator("param", z.object({ id: z.string() })),
+    zValidator("json", projectsInsertSchema
+      .omit({ id: true, userId: true, createdAt: true, updatedAt: true })
+      .partial()
+    ),
+    async (c) => {
+      const auth = c.get("authUser");
+      const { id } = c.req.valid("param");
+      const values = c.req.valid("json");
+
+      if (!auth.token?.id) return c.json({ error: "Unauthorized" }, 401);
+
+      const data = await db.update(projects).set({
+        ...values,
+        updatedAt: new Date(),
+      }).where(
+        and(eq(projects.id, id), eq(projects.userId, auth.token.id))
+      ).returning();
+
+      if (data.length === 0) return c.json({ error: "Unauthorized" }, 401);
+
+      return c.json({ data: data[0] });
+    }
+  )
   .post(
     "/",
     verifyAuth(),

@@ -34,7 +34,7 @@ export const Navbar = ({
 }: NavbarProps) => {
   const data = useMutationState({  
     filters: {
-      mutationKey: ["projects", { id }],
+      mutationKey: ["project", { id }],
       exact: true,
     },
     select: (mutation) => mutation.state.data,
@@ -116,7 +116,7 @@ export const Navbar = ({
         <Separator orientation="vertical" className="mx-2"/>
         {isPending  && (
           <div className="flex items-center gap-x-2">
-            <Loader className="size-4 text-muted-foreground" />
+            <Loader className="size-4 animate-spin text-muted-foreground" />
             <div className="text-xs text-muted-foreground">
               Saving...
             </div>

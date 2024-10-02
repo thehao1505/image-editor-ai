@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/hono";
 import { toast } from "sonner";
@@ -14,7 +14,7 @@ export const useUpdateProject = (id: string) => {
     Error,
     RequestType
   >({
-    mutationKey: ["projects", { id }],
+    mutationKey: ["project", { id }],
     mutationFn: async (json) => {
       const response = await client.api.projects[":id"].$patch({
         json,
@@ -25,7 +25,8 @@ export const useUpdateProject = (id: string) => {
       return await response.json();
     },
     onSuccess: () => {
-      clientQuery.invalidateQueries({ queryKey: ["projects", { id }] });
+      clientQuery.invalidateQueries({ queryKey: ["projects"] });
+      clientQuery.invalidateQueries({ queryKey: ["project", { id }] });
     },
     onError: () => {
       toast.error("Failed to udpate project")

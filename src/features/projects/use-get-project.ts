@@ -7,7 +7,7 @@ export type ResponseType = InferResponseType<typeof client.api.projects[":id"]["
 export const useGetProject = (id: string) => {
   const query = useQuery({
     enabled: !!id,
-    queryKey: ["projects", { id }],
+    queryKey: ["project", { id }],
     queryFn: async () => {
       const response = await client.api.projects[":id"].$get({
         param: { id }

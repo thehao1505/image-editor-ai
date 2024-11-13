@@ -19,13 +19,26 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useDuplicateProject } from "@/features/projects/use-duplicate-project";
+import { useDeleteProject } from "@/features/projects/use-delete-project";
+import { useConfirm } from "@/hooks/use-confirm";
 
 export const ProjectsSection = () => {
+  const [ConfirmationDialog, confirm] = useConfirm(
+    'Are you sure?',
+    'You are about to delete this project.'
+  );
   const duplicateMutation = useDuplicateProject();
+  const removeMutation = useDeleteProject();
   const router = useRouter();
 
   const onCopy = (id: string) => {
     duplicateMutation.mutate({ id });
+  };
+
+  const onDelete = async (id: string) => {
+    const ok = await confirm();
+
+    if (ok) removeMutation.mutate({ id });
   };
 
   const {
@@ -63,7 +76,7 @@ export const ProjectsSection = () => {
       </div>
     )
 
-  if (!data.pages.length) 
+  if (!data.pages.length || !data.pages[0].data.length) 
     return (
       <div className="sapce-y-4">
         <h3 className="font-semibold text-lg">
@@ -80,6 +93,7 @@ export const ProjectsSection = () => {
 
   return (
     <div>
+      <ConfirmationDialog />
       <h3 className="font-semibold text-lg">
         Recent projects
       </h3>
@@ -118,8 +132,8 @@ export const ProjectsSection = () => {
                           <CopyIcon className="size-4 mr-2" /> Make a copy
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          disabled={false}
-                          onClick={() => {}}
+                          disabled={removeMutation.isPending}
+                          onClick={() => onDelete(project.id)}
                           className="h-10 cursor-pointer"
                         >
                           <Trash className="size-4 mr-2" /> Delete

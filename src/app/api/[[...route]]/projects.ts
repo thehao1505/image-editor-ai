@@ -4,9 +4,32 @@ import { db } from "@/db/drizzle";
 import { verifyAuth } from "@hono/auth-js";
 import { zValidator } from "@hono/zod-validator";
 import { projects, projectsInsertSchema } from "@/db/schema";
-import { and, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 
 const app = new Hono()
+  .get(
+    "/templates",
+    verifyAuth(),
+    zValidator(
+      "query",
+      z.object({
+      page: z.coerce.number(),
+      limit: z.coerce.number(),
+      })
+    ),
+    async (c) => {
+      const { page, limit } = c.req.valid("query");
+
+      const data = await db.select().from(projects).where(eq(projects.isTemplate, true))
+        .limit(limit).offset((page - 1) * limit)
+        .orderBy(
+          asc(projects.isPremium),
+          desc(projects.updatedAt)
+        );
+
+      return c.json({ data});
+    }
+  )
   .delete(
     "/:id",
     verifyAuth(),

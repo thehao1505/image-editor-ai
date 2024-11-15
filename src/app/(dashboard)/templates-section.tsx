@@ -5,14 +5,21 @@ import { Loader, TriangleAlert } from "lucide-react";
 import { TemplateCard } from "./templatecard";
 import { useCreateProject } from "@/features/projects/use-create-project";
 import { useRouter } from "next/navigation";
+import { usePaywall } from "@/features/subscriptions/hooks/use-paywall";
 
 export const TemplatesSection = () => {
+  const { shouldBlock, triggerPaywall } = usePaywall();
   const router = useRouter();
   const mutation = useCreateProject();
 
   const {data, isLoading, isError} = useGetTemplates({ page: "1", limit: "4" });
 
   const onClick = (template: ResponseType["data"][0]) => {
+    if (template.isPremium && shouldBlock) {
+      triggerPaywall();
+      return;
+    }
+
     mutation.mutate({
       name: `${template.name} project`,
       json: template.json,

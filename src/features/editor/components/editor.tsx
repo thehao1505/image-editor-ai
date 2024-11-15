@@ -18,6 +18,7 @@ import { StrokeWidthSidebar } from "@/features/editor/components/stroke-width-si
 import { ImageSidebar } from "@/features/editor/components/image-sidebar";
 import { FilterSidebar } from "@/features/editor/components/filter-sidebar";
 import { AiSidebar } from "@/features/editor/components/ai-sidebar";
+import { TemplateSidebar } from "@/features/editor/components/template-sidebar";
 import { RemoveBgSidebar } from "@/features/editor/components/remove-bg-sidebar";
 import { DrawSidebar } from "@/features/editor/components/draw-sidebar";
 import { SettingsSidebar } from "./settings-sidebar";
@@ -104,6 +105,7 @@ export const Editor = ({ initialData }: EditorProps) => {
         <TextSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
         <FontSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
         <ImageSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
+        <TemplateSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
         <FilterSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
         <AiSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>
         <RemoveBgSidebar editor={editor} activeTool={activeTool} onChangeActiveTool={onChangeActiveTool}/>

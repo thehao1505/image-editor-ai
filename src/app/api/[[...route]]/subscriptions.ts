@@ -105,13 +105,11 @@ const app = new Hono()
 
     const session = event.data.object as Stripe.Checkout.Session;
     
-    console.log("Event:::: ", event.type);
     if (event.type === "checkout.session.completed") {
       const subscription = await stripe.subscriptions.retrieve(
         session.subscription as string
       );
       
-      console.log("Session:::: ", session?.metadata?.userId);
       if (!session?.metadata?.userId) {
         return c.json({ error: "Invalid session" }, 400);
       }
@@ -133,7 +131,6 @@ const app = new Hono()
         session.subscription as string
       );
 
-      console.log("Session:::: ", !session?.metadata?.userId);
       if (!session?.metadata?.userId) {
         return c.json({ error: "Invalid session" }, 400);
       }

@@ -12,9 +12,11 @@ import {
 import { useSubscriptionModel } from "@/features/subscriptions/store/use-subscription-model";
 import { Separator } from "@radix-ui/react-separator";
 import { CheckCircle2 } from "lucide-react";
+import { useCheckout } from "@/features/subscriptions/api/use-checkout";
 import { Button } from "@/components/ui/button";
 
 export const SubscriptionModel = () => {
+  const mutation = useCheckout();
   const { isOpen, onClose } = useSubscriptionModel();
 
   return (
@@ -51,15 +53,21 @@ export const SubscriptionModel = () => {
           <li className="flex items-center">
             <CheckCircle2 className="size-5 mr-2 fill-blue-500 text-white"/>
             <p className="text-sm text-muted-foreground">
-              AI generation
+              AI remove background
+            </p>
+          </li>
+          <li className="flex items-center">
+            <CheckCircle2 className="size-5 mr-2 fill-blue-500 text-white"/>
+            <p className="text-sm text-muted-foreground">
+              AI generation image
             </p>
           </li>
         </ul>
         <DialogFooter className="pt-2 mt-4 gap-y-2">
           <Button
             className="w-full"
-            onClick={() => {}}
-            disabled={false}
+            onClick={() => mutation.mutate()}
+            disabled={mutation.isPending}
           >
             Upgrade
           </Button>

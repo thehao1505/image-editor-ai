@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
-type SubscriptionModelState = {
+type FailModelState = {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 }
 
-export const useSubscriptionModel = create<SubscriptionModelState>((set) => ({
+export const useFailModel = create<FailModelState>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),

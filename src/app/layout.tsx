@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Models } from "@/components/models";
+import { SubscriptionAlert } from "@/features/subscriptions/components/subscription-alert";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default async function RootLayout({
           <Provider>
             <Toaster />
             <Models />
+            <SubscriptionAlert />
             {children}
           </Provider>
         </body>

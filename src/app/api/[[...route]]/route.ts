@@ -6,6 +6,7 @@ import ai from './ai';
 import users from './users';
 import authConfig from '@/auth.config';
 import projects from './projects';
+import subscriptions from './subscriptions';
 
 export const runtime = 'nodejs';
 
@@ -24,6 +25,7 @@ const routes = app
   .route('/ai', ai)
   .route('/projects', projects)
   .route('/images', images)
+  .route('/subscriptions', subscriptions)
   .route('/users', users);
 
 export const GET = handle(app);
